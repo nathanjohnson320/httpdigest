@@ -1,7 +1,7 @@
 defmodule Httpdigest.Mixfile do
   use Mix.Project
 
-  def project do
+  def project() do
     [app: :httpdigest,
      version: "0.0.1",
      elixir: "~> 1.2",

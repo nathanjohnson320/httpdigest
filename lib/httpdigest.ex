@@ -1,7 +1,7 @@
 defmodule Httpdigest do
   def get_header(headers, key) do
     headers
-    |> Enum.filter(fn({k, _}) -> k == key end)
+    |> Enum.filter(fn({k, _}) -> String.downcase(k) == String.downcase(key) end)
     |> hd()
     |> elem(1)
   end
@@ -16,9 +16,9 @@ defmodule Httpdigest do
     end)
   end
 
-  def create_response(username, password, path, auth) do
+  def create_response(username, password, method \\ "GET", path, auth) do
     ha1 = md5(username <> ":" <> auth["realm"] <> ":" <> password)
-    ha2 = md5("GET:#{path}")
+    ha2 = md5("#{method}:#{path}")
     client_nonce =  cnonce()
     nc = "00000001"
     response = md5("#{ha1}:#{auth["nonce"]}:#{nc}:#{client_nonce}:#{auth["qop"]}:#{ha2}")
@@ -52,10 +52,10 @@ defmodule Httpdigest do
       Base.encode16(:erlang.md5(data), case: :lower)
   end
 
-  def create_header(headers, username, password, path) do
+  def create_header(headers, username, password, method \\ "GET", path) do
     auth = Httpdigest.get_header(headers, "WWW-Authenticate")
     parsed_auth = Httpdigest.parse_auth(auth)
-    response = Httpdigest.create_response(username, password, path, parsed_auth)
+    response = Httpdigest.create_response(username, password, method, path, parsed_auth)
     %{"Authorization" => response}
   end
 end
