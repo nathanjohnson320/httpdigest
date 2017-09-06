@@ -14,7 +14,7 @@ defmodule Httpdigest.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger,:httpoison]]
+    [applications: [:logger]]
   end
 
   # Dependencies can be Hex packages:
@@ -26,7 +26,6 @@ defmodule Httpdigest.Mixfile do
   #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
   #
   # Type "mix help deps" for more examples and options
-  defp deps do
-    [{:httpoison, "~> 0.8.0"}]
+  defp deps() do
   end
 end
