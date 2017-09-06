@@ -2,7 +2,7 @@ defmodule Httpdigest do
   def get_header(headers, key) do
     headers
     |> Enum.filter(fn({k, _}) -> k == key end)
-    |> hd
+    |> hd()
     |> elem(1)
   end
 
@@ -19,7 +19,7 @@ defmodule Httpdigest do
   def create_response(username, password, path, auth) do
     ha1 = md5(username <> ":" <> auth["realm"] <> ":" <> password)
     ha2 = md5("GET:#{path}")
-    client_nonce =  cnonce
+    client_nonce =  cnonce()
     nc = "00000001"
     response = md5("#{ha1}:#{auth["nonce"]}:#{nc}:#{client_nonce}:#{auth["qop"]}:#{ha2}")
     result = Map.to_list(%{
@@ -43,7 +43,7 @@ defmodule Httpdigest do
     "Digest #{result}"
   end
 
-  defp cnonce do
+  defp cnonce() do
      :crypto.strong_rand_bytes(4)
      |> Base.encode16(case: :lower)
   end
