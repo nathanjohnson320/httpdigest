@@ -31,8 +31,8 @@ defmodule Httpdigest do
       "nc" => nc,
       "cnonce" => client_nonce,
       "response" => response,
-      "opaque" => auth["opaque"]
     })
+    |> add_opaque(auth["opaque"])
     |> Enum.reduce([], fn({key, val}, acc) ->
       case key do
         "nc" -> acc ++ ["#{key}=#{val}"]
@@ -40,6 +40,7 @@ defmodule Httpdigest do
       end
     end)
     |> Enum.join(",")
+
     "Digest #{result}"
   end
 
@@ -58,4 +59,7 @@ defmodule Httpdigest do
     response = Httpdigest.create_response(username, password, method, path, parsed_auth)
     %{"Authorization" => response}
   end
+
+  defp add_opaque(response, opaque) when opaque in [nil, ""], do: response
+  defp add_opaque(response, opaque), do: Map.put(response, "opaque", opaque)
 end
