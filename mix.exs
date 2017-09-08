@@ -40,7 +40,7 @@ defmodule Httpdigest.Mixfile do
   def package() do
     [
       name: "httpdigest",
-      files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Nathan Johnson"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/nathanjohnson320/httpdigest"}
