@@ -10,7 +10,7 @@ defmodule Httpdigest do
     String.replace(auth, "Digest ", "")
     |> String.split(",")
     |> Enum.reduce(%{}, fn(string, acc) ->
-      parse_map = Regex.named_captures(~r/(?<key>.+)="(?<val>.+)"/, string)
+      parse_map = Regex.named_captures(~r/\s*(?<key>.+?)\s*=\s*"(?<val>.+)"/, string)
       item = %{parse_map["key"] => parse_map["val"]}
       Map.merge(acc, item)
     end)
